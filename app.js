@@ -390,6 +390,15 @@ function DStarLiteSolver() {
         sStart = neighbor[1];
         // move to sStart
         solver.current = sStart;
+        if(edgeCostsChanged(sStart)){
+            km = km + heuristic(sLast, sStart);
+            sLast = sStart;
+            // for all directed edges (u, v) with changed edge costs
+            mapToNeighbors(sStart, function(x, y) {
+                tryForEdge(sStart, cellAt(x, y));
+            })
+            computeShortestPath()
+        }
         updateTiles();
         solver.current.state = 'head';
         markPath();
